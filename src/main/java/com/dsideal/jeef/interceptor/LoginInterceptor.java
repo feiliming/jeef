@@ -27,23 +27,17 @@ public class LoginInterceptor implements Interceptor{
 
 	@Override
 	public void intercept(Invocation inv) {
-		if(inv.getActionKey().equals("/admin/login")){
-			User user = inv.getController().getSessionAttr("user");
-			if(user != null){
-				inv.getController().redirect("/admin");
-				return;
-			}
-		}
-		if(anonUrls.contains(inv.getActionKey())){
+		String ak = inv.getActionKey();
+		if(anonUrls.contains(ak)){
 			inv.invoke();
 			return;
 		}
+		
 		User user = inv.getController().getSessionAttr("user");
-		if(user == null){
+		if (user == null) {
 			inv.getController().redirect("/admin/login");
 			return;
 		}
-		
 		inv.invoke();
 	}
 

@@ -117,56 +117,45 @@
 	</div>
 </div>
   
-  <script src="js/jquery.min.js?v=2.1.4"></script> 
-  <script src="js/bootstrap.min.js?v=3.3.5"></script>
-  <script src="js/plugins/validate/jquery.validate.min.js"></script> 
-  <script src="js/plugins/bootstrap-table/bootstrap-table.js"></script> 
-  <script src="js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script> 
-  <script src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script> 
-  <script src="plugins/zTree-3.5/js/jquery.ztree.all-3.5.min.js"></script>
-  <script src="js/jeef/module/jeef-org-tree.js"></script>
-  <SCRIPT type="text/javascript">
-  	var $table = $("#userList"),
-  		$modal = $('#modal').modal({show: false});
-  	
+<script src="js/jquery.min.js?v=2.1.4"></script> 
+<script src="js/bootstrap.min.js?v=3.3.5"></script>
+<script src="js/plugins/validate/jquery.validate.min.js"></script> 
+<script src="js/plugins/bootstrap-table/bootstrap-table.js"></script> 
+<script src="js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script> 
+<script src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script> 
+<script src="plugins/zTree-3.5/js/jquery.ztree.all-3.5.min.js"></script>
+<script src="js/plugins/validate/jquery.validate.min.js"></script> 
+<script src="js/plugins/validate/messages_zh.min.js"></script> 
+<script src="js/jeef/module/jeef-org-tree.js"></script>
+<script type="text/javascript">
+ 	var $table = $("#userList"),
+ 		$modal = $('#modal').modal({show: false});
+ 	
 	$(function(){
-		//loadOrgTree();
-		//loadUserList();
+		
 		$('.adduser').click(function () {
-            showModal("添加用户");
-        })
-        
-        $("orgTree").orgTree({
-    		view: {
-    			selectedMulti: false
-    		},
-    		data: {
-    			simpleData: {
-    				enable: true
-    			}
-    		},
-    		callback: {
-    			onClick: function(){alert(111);}
-    		}
-    	});
-        
-	})
-	
-	var setting = {
-		view: {
-			addHoverDom: addHoverDom,
-			removeHoverDom: removeHoverDom,
-			selectedMulti: false
-		},
-		data: {
-			simpleData: {
-				enable: true
+			showModal("添加用户");
+	    })
+	       
+		$("orgTree").orgTree({
+			view: {
+				addHoverDom: addHoverDom,
+				removeHoverDom: removeHoverDom,
+				selectedMulti: false
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			callback: {
+				onClick: onClick
 			}
-		},
-		callback: {
-			onClick: onClick
-		}
-	};
+		});
+		
+		loadUserList();
+	       
+	})
 	
 	function onClick(event, treeId, treeNode){
 		$('#userList').bootstrapTable('refresh','admin/user/getUsers');
@@ -179,7 +168,7 @@
 	function showRenameBtn(treeId, treeNode) {
 		return false;
 	}
-
+	
 	function addHoverDom(treeId, treeNode) {
 		var sObj = $("#" + treeNode.tId + "_span");
 		if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
@@ -199,80 +188,12 @@
 	function loadOrgTree() {
 		$.ajax({
 			type : "GET",
-			url : '${contextPath}' + '/admin/org/getOrgsForZtree',
+			url : '${contextPath}/admin/org/getOrgsForZtree',
 			async : false,
 			success : function(data) {
 				$.fn.zTree.init($("#orgTree"), setting, data);
 			}
 		});
-	}
-	
-	function addUser(){
-		$("<div/>").dialog({
-			id: 'userAddDialog',
-		    title: '添加用户',
-		    width: 500,
-		    height: 350,
-		    cache: false,
-		    iconCls: 'icon-add',
-		    href: 'user/addPage',
-		    modal: true,
-		    onLoad: function(){
-		    	$('#userAddName').textbox('textbox').focus();
-		    },
-		    onClose: function(){
-		    	$("#userAddDialog").dialog('destroy');
-		    },
-		    buttons: [{
-		    	text: '保存',
-		    	iconCls:'icon-save',
-		    	handler:function(){
-					addUserSubmit();
-		    	}
-		    },{
-		    	text: '取消',
-		    	iconCls:'icon-cancel',
-		    	handler:function(){
-		    		$("#userAddDialog").dialog('destroy');
-		    	}
-		    }]
-		}); 
-	}
-	
-	function editUser(id){
-		if (id == undefined) {
-			parent.shownok("请选择一条数据进行编辑!");
-			return;
-		}
-		$("<div/>").dialog({
-			id: 'userEditDialog',
-		    title: '编辑用户',
-		    width: 500,
-		    height: 350,
-		    cache: false,
-		    iconCls: 'icon-add',
-		    href: 'user/editPage?id=' + id,
-		    modal: true,
-		    onLoad: function(){
-		    	$('#userEditName').textbox('textbox').focus();
-		    },
-		    onClose: function(){
-		    	$("#userEditDialog").dialog('destroy');
-		    },
-		    buttons: [{
-		    	text: '保存',
-		    	iconCls:'icon-save',
-		    	handler:function(){
-					editUserSubmit();
-		    	}
-		    },{
-		    	text: '取消',
-		    	iconCls:'icon-cancel',
-		    	handler:function(){
-		    		$("#userEditDialog").dialog('destroy');
-		    	}
-		    }]
-		}); 
 	}
 	
 	function searchUser(value){
@@ -303,6 +224,9 @@
 	        dataField: 'list',
 	        //smartDisplay: false,
 	        queryParams: 'queryParams',
+	        onLoadSuccess: function(data){
+	        	//alert(JSON.stringify(data));
+	        },
 	        rowStyle: function(row, index){
 	        	if(row.disabled == 1){
 					return {
@@ -364,13 +288,13 @@
 		});
 		
 		$table.on('post-body.bs.table', function () {
-    		var $search = $table.data('bootstrap.table')
-        		.$toolbar.find('.search input');
-    		$search.attr('placeholder', '输入登录名或真实姓名');
-    	});
+	   		var $search = $table.data('bootstrap.table')
+	       		.$toolbar.find('.search input');
+	   		$search.attr('placeholder', '输入登录名或真实姓名');
+	   	});
 		
 	}
-
+	
 	function queryParams(params){
 		var orgId = "";
 		var zTree = $.fn.zTree.getZTreeObj("orgTree");
@@ -389,15 +313,70 @@
 			forks_count: 0,
 			description: ''
 		}; // default row value
-
+	
 		$modal.data('id', row.id);
 		$modal.find('.modal-title').text(title);
 		for (var name in row) {
 			$modal.find('input[name="' + name + '"]').val(row[name]);
 		}
 		$modal.modal('show');
+		
+		var e = "<i class='fa fa-times-circle'></i> ";
+		$("#signupForm").validate({
+			rules : {
+				firstname : "required",
+				lastname : "required",
+				username : {
+					required : !0,
+					minlength : 2
+				},
+				password : {
+					required : !0,
+					minlength : 5
+				},
+				confirm_password : {
+					required : !0,
+					minlength : 5,
+					equalTo : "#password"
+				},
+				email : {
+					required : !0,
+					email : !0
+				},
+				topic : {
+					required : "#newsletter:checked",
+					minlength : 2
+				},
+				agree : "required"
+			},
+			messages : {
+				firstname : e + "请输入你的姓",
+				lastname : e + "请输入您的名字",
+				username : {
+					required : e + "请输入您的用户名",
+					minlength : e + "用户名必须两个字符以上"
+				},
+				password : {
+					required : e + "请输入您的密码",
+					minlength : e + "密码必须5个字符以上"
+				},
+				confirm_password : {
+					required : e + "请再次输入密码",
+					minlength : e + "密码必须5个字符以上",
+					equalTo : e + "两次输入的密码不一致"
+				},
+				email : e + "请输入您的E-mail",
+				agree : {
+					required : e + "必须同意协议后才能注册",
+					element : "#agree-error"
+				}
+			}
+		}), $("#username").focus(function() {
+			var e = $("#firstname").val(), r = $("#lastname").val();
+			e && r && !this.value && (this.value = e + "." + r)
+		})
 	}
 
-</SCRIPT>
+</script>
  </body>
 </html>

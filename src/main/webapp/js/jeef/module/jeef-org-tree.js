@@ -35,43 +35,19 @@
 	var OrgTree = function(){
 		this.init();
 	}
-	var addHoverDom = function(treeId, treeNode) {
-		var sObj = $("#" + treeNode.tId + "_span");
-		if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
-		var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-			+ "' title='添加用户' onfocus='this.blur();'></span>";
-		sObj.after(addStr);
-		var btn = $("#addBtn_"+treeNode.tId);
-		if (btn) btn.bind("click", function(){
-			addUser(treeNode.id);
-		});
-	};
 	
-	var removeHoverDom = function(treeId, treeNode) {
-		$("#addBtn_"+treeNode.tId).unbind().remove();
-	};
-	
-	var onClick = function(event, treeId, treeNode){
-		$('#userList').bootstrapTable('refresh','admin/user/getUsers');
-	}
 	OrgTree.DefaultSetting = {
 		view: {
-			addHoverDom: addHoverDom,
-			removeHoverDom: removeHoverDom,
 			selectedMulti: false
 		},
 		data: {
 			simpleData: {
 				enable: true
 			}
-		},
-		callback: {
-			onClick: onClick
 		}
 	}
 	
 	OrgTree.prototype.init = function(){
-		console.log(this.options);
 		$.ajax({
 			type : "GET",
 			url : 'admin/org/getOrgsForZtree',
@@ -81,8 +57,6 @@
 			}
 		});
 	}
-	
-
 	
 	$.fn.orgTree = function(options){
 		$.extend(OrgTree.DefaultSetting, options);

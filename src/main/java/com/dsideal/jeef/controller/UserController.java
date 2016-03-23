@@ -1,8 +1,5 @@
 package com.dsideal.jeef.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.fastjson.JSONObject;
 import com.dsideal.jeef.model.User;
 import com.jfinal.core.Controller;

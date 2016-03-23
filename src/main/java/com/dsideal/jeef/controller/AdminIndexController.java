@@ -1,12 +1,8 @@
 package com.dsideal.jeef.controller;
 
 import com.dsideal.jeef.model.User;
-import com.dsideal.jeef.validator.LoginValidator;
-import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
-import com.jfinal.ext.interceptor.SessionInViewInterceptor;
-import com.jfinal.ext.render.CaptchaRender;
 
 /**
  * 
@@ -16,7 +12,12 @@ import com.jfinal.ext.render.CaptchaRender;
 public class AdminIndexController extends Controller {
 
 	public void index() {
-		render("index.html");
+		User user = getSessionAttr("user");
+		if(user != null){
+			render("index.html");
+			return;
+		}
+		redirect("/admin/login");
 	}
 	
 	public void index_v1() {
