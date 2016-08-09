@@ -49,4 +49,8 @@ public class User extends BaseUser<User> {
 		log.info("校验用户名 {} 和密码 {}", user.getStr("login_name"), user.getStr("password") );
 		return dao.findFirst("select * from sys_user where login_name = '" + user.getStr("login_name") + "' and password = '" + MD5Util.md5(user.getStr("password")) + "'");
 	}
+	
+	public User getUserByLoginName(String loginName){
+		return dao.findFirst("select * from sys_user where login_name = '" + loginName +"'");
+	}
 }

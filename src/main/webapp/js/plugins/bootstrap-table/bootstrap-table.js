@@ -2637,7 +2637,7 @@
     $.fn.bootstrapTable = function (option) {
         var value,
             args = Array.prototype.slice.call(arguments, 1);
-        console.log(JSON.stringify(BootstrapTable.DEFAULTS));
+        //console.log(JSON.stringify(BootstrapTable.DEFAULTS));
         this.each(function (i,o) {
         	//alert(JSON.stringify(o));
             var $this = $(this),

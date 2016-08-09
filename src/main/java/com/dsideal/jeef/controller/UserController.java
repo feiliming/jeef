@@ -35,5 +35,10 @@ public class UserController extends Controller{
 		renderJson(obj);
 	}
 	
+	public void checkLoginName(){
+		
+	}
+	
+	
 	
 }

@@ -138,11 +138,6 @@
 	    })
 	       
 		$("orgTree").orgTree({
-			view: {
-				addHoverDom: addHoverDom,
-				removeHoverDom: removeHoverDom,
-				selectedMulti: false
-			},
 			data: {
 				simpleData: {
 					enable: true
@@ -159,41 +154,6 @@
 	
 	function onClick(event, treeId, treeNode){
 		$('#userList').bootstrapTable('refresh','admin/user/getUsers');
-	}
-	
-	function showRemoveBtn(treeId, treeNode) {
-		return false;
-	}
-	
-	function showRenameBtn(treeId, treeNode) {
-		return false;
-	}
-	
-	function addHoverDom(treeId, treeNode) {
-		var sObj = $("#" + treeNode.tId + "_span");
-		if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
-		var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-			+ "' title='添加用户' onfocus='this.blur();'></span>";
-		sObj.after(addStr);
-		var btn = $("#addBtn_"+treeNode.tId);
-		if (btn) btn.bind("click", function(){
-			addUser(treeNode.id);
-		});
-	};
-	
-	function removeHoverDom(treeId, treeNode) {
-		$("#addBtn_"+treeNode.tId).unbind().remove();
-	};
-	
-	function loadOrgTree() {
-		$.ajax({
-			type : "GET",
-			url : '${contextPath}/admin/org/getOrgsForZtree',
-			async : false,
-			success : function(data) {
-				$.fn.zTree.init($("#orgTree"), setting, data);
-			}
-		});
 	}
 	
 	function searchUser(value){
