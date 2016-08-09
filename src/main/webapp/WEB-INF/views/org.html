@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="utf-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <base href="${contextPath}/">
+  
+  <title>H+ 后台主题UI框架 - 主页示例</title> 
+  <link rel="shortcut icon" href="favicon.ico"> 
+  <link href="${contextPath}/css/bootstrap.min.css?v=3.3.5" rel="stylesheet"> 
+  <link href="${contextPath}/css/font-awesome.min.css?v=4.4.0" rel="stylesheet"> 
+  <link href="${contextPath}/css/animate.min.css" rel="stylesheet"> 
+  <link href="${contextPath}/css/style.min.css?v=4.0.0" rel="stylesheet"> 
+  <link href="${contextPath}/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet"> 
+  <link href="${contextPath}/plugins/zTree-3.5/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+  
+  <style type="text/css">
+   /*ztree增加按钮的样式 */
+   .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+   body {margin:0;padding:0}
+   .ibox-content { overflow: auto; min-height: 500px }
+  </style>
+ </head> 
+ <body class="gray-bg"> 
+  <div class="wrapper wrapper-content"> 
+   <div class="row"> 
+    <div class="col-sm-2"> 
+     <div class="ibox float-e-margins"> 
+      <div class="ibox-title"> 
+       <h5>组织机构</h5> 
+      </div> 
+      <div class="ibox-content no-padding"> 
+        <ul id="orgTree" data-toggle="orgTree" class="ztree"></ul>
+      </div> 
+     </div> 
+    </div> 
+    <div class="col-sm-10"> 
+     <div class="ibox float-e-margins"> 
+      <div class="ibox-title"> 
+       <h5>用户列表</h5> 
+      </div> 
+      <div class="ibox-content no-padding"> 
+		<div id="userToolbar" class="btn-group hidden-xs" role="group"> 
+		 <button type="button" class="adduser btn btn-outline btn-default" title="添加用户"> <i class="glyphicon glyphicon-plus" aria-hidden="true"></i> </button> 
+		 <button type="button" class="btn btn-outline btn-default" title="批量设置角色"> <i class="glyphicon glyphicon-edit" aria-hidden="true"></i> </button> 
+		 <button type="button" class="btn btn-outline btn-default" title="删除用户"> <i class="glyphicon glyphicon-trash" aria-hidden="true"></i> </button> 
+		</div>
+		<table id="userList"></table>
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  
+<div id="modal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"></h4>
+			</div>
+			<div class="modal-body">
+		       <form class="form-horizontal m-t" id="signupForm"> 
+		        <div class="form-group"> 
+		         <label class="col-sm-3 control-label">姓氏：</label> 
+		         <div class="col-sm-8"> 
+		          <input id="firstname" name="firstname" class="form-control" type="text"> 
+		          <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 这里写点提示的内容</span> 
+		         </div> 
+		        </div> 
+		        <div class="form-group"> 
+		         <label class="col-sm-3 control-label">名字：</label> 
+		         <div class="col-sm-8"> 
+		          <input id="lastname" name="lastname" class="form-control" type="text" aria-required="true" aria-invalid="false"> 
+		         </div> 
+		        </div> 
+		        <div class="form-group"> 
+		         <label class="col-sm-3 control-label">用户名：</label> 
+		         <div class="col-sm-8"> 
+		          <input id="username" name="username" class="form-control" type="text" aria-required="true" aria-invalid="true"> 
+		         </div> 
+		        </div> 
+		        <div class="form-group"> 
+		         <label class="col-sm-3 control-label">密码：</label> 
+		         <div class="col-sm-8"> 
+		          <input id="password" name="password" class="form-control" type="password"> 
+		         </div> 
+		        </div> 
+		        <div class="form-group"> 
+		         <label class="col-sm-3 control-label">确认密码：</label> 
+		         <div class="col-sm-8"> 
+		          <input id="confirm_password" name="confirm_password" class="form-control" type="password"> 
+		          <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 请再次输入您的密码</span> 
+		         </div> 
+		        </div> 
+		        <div class="form-group"> 
+		         <label class="col-sm-3 control-label">E-mail：</label> 
+		         <div class="col-sm-8"> 
+		          <input id="email" name="email" class="form-control" type="email"> 
+		         </div> 
+		        </div> 
+		        <div class="form-group"> 
+		         <div class="col-sm-8 col-sm-offset-3"> 
+		          <div class="checkbox"> 
+		           <label> <input type="checkbox" class="checkbox" id="agree" name="agree"> 我已经认真阅读并同意《H+使用协议》 </label> 
+		          </div> 
+		         </div> 
+		        </div> 
+		        <div class="form-group"> 
+		         <div class="col-sm-8 col-sm-offset-3"> 
+		          <button class="btn btn-primary" type="submit">提交</button> 
+		         </div> 
+		        </div> 
+		       </form> 
+			</div>
+		</div>
+	</div>
+</div>
+  
+<script src="js/jquery.min.js?v=2.1.4"></script> 
+<script src="js/bootstrap.min.js?v=3.3.5"></script>
+<script src="js/plugins/validate/jquery.validate.min.js"></script> 
+<script src="js/plugins/bootstrap-table/bootstrap-table.js"></script> 
+<script src="js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script> 
+<script src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script> 
+<script src="plugins/zTree-3.5/js/jquery.ztree.all-3.5.min.js"></script>
+<script src="js/plugins/validate/jquery.validate.min.js"></script> 
+<script src="js/plugins/validate/messages_zh.min.js"></script> 
+<script src="js/jeef/module/jeef-org-tree.js"></script>
+<script type="text/javascript">
+ 	var $table = $("#userList"),
+ 		$modal = $('#modal').modal({show: false});
+ 	
+	$(function(){
+		
+		$('.adduser').click(function () {
+			showModal("添加用户");
+	    })
+	       
+		$("orgTree").orgTree({
+			view: {
+				addHoverDom: addHoverDom,
+				removeHoverDom: removeHoverDom,
+				selectedMulti: false
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			callback: {
+				onClick: onClick
+			}
+		});
+		
+		loadUserList();
+	       
+	})
+	
+	function onClick(event, treeId, treeNode){
+		$('#userList').bootstrapTable('refresh','admin/user/getUsers');
+	}
+	
+	function showRemoveBtn(treeId, treeNode) {
+		return false;
+	}
+	
+	function showRenameBtn(treeId, treeNode) {
+		return false;
+	}
+	
+	function addHoverDom(treeId, treeNode) {
+		var sObj = $("#" + treeNode.tId + "_span");
+		if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+		var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+			+ "' title='添加用户' onfocus='this.blur();'></span>";
+		sObj.after(addStr);
+		var btn = $("#addBtn_"+treeNode.tId);
+		if (btn) btn.bind("click", function(){
+			addUser(treeNode.id);
+		});
+	};
+	
+	function removeHoverDom(treeId, treeNode) {
+		$("#addBtn_"+treeNode.tId).unbind().remove();
+	};
+	
+	function loadOrgTree() {
+		$.ajax({
+			type : "GET",
+			url : '${contextPath}/admin/org/getOrgsForZtree',
+			async : false,
+			success : function(data) {
+				$.fn.zTree.init($("#orgTree"), setting, data);
+			}
+		});
+	}
+	
+	function searchUser(value){
+		var orgId = "";
+		var zTree = $.fn.zTree.getZTreeObj("orgTree");
+		var nodes = zTree.getSelectedNodes();
+		if(nodes.length > 0){
+			orgId = nodes[0].id;
+		}
+		$('#userList').bootstrapTable('refresh','admin/user/getUsers');
+	}
+	
+	function loadUserList(){
+		$table.bootstrapTable({
+			url: "admin/user/getUsers",
+			pagination: true,
+	        sidePagination: 'server', // client or server
+	        sortOrder: 'desc',
+	        //height: 500,
+	        striped: true,
+	        search: true,
+	        selectItemName: 'userIds',
+	        showColumns: true,
+	        showRefresh: true,
+	        showToggle: true, //切换列表或卡片
+	        toolbar: '#userToolbar',
+	        iconSize : "outline",
+	        dataField: 'list',
+	        //smartDisplay: false,
+	        queryParams: 'queryParams',
+	        onLoadSuccess: function(data){
+	        	//alert(JSON.stringify(data));
+	        },
+	        rowStyle: function(row, index){
+	        	if(row.disabled == 1){
+					return {
+		            	classes: 'danger'
+		        	};
+	        	}else{
+	        		return {}
+	        	}
+	        },
+	        columns:[{
+	        	field:'state',
+	        	align:'center',
+	        	valign:'middle',
+	        	checkbox: true
+	        },{
+	        	field:'login_name',
+	        	title:'登录名',
+	        	width: 200,
+	        	align:'center'
+	        },{
+	        	field:'real_name',
+	        	title:'真实名',
+	        	align:'center',
+	        	sortable: true
+	        },{
+	        	field:'create_time',
+	        	title:'创建时间',
+	        	align:'center'
+	        }
+	        ,{
+	        	field:'disabled',
+	        	title:'启用状态',
+	        	align:'center',
+	        	formatter: function(value, row, index){
+					switch(value){
+						case 0 :
+							return '启用';
+							break;
+						case 1 :
+							return '禁用';
+							break;
+					}
+				}
+	        },{
+	        	field:'action',
+	        	title:'操作',
+	        	align:'center',
+	        	formatter: function(value, row, index){
+					var str = '&nbsp;';
+					str += '<a href="javascript:void(0)" onclick="grantFun('+ row.id +');" >设置角色</a>';
+					str += '&nbsp;|&nbsp;';
+					str += '<a href="javascript:void(0)" onclick="editUser('+ row.id +');" >编辑</a>';
+					str += '&nbsp;|&nbsp;';
+					str += '<a href="javascript:void(0)" onclick="deleteUser('+ row.id +');" >删除</a>';
+					str += '&nbsp;';
+					return str;
+				}
+	        }]
+		});
+		
+		$table.on('post-body.bs.table', function () {
+	   		var $search = $table.data('bootstrap.table')
+	       		.$toolbar.find('.search input');
+	   		$search.attr('placeholder', '输入登录名或真实姓名');
+	   	});
+		
+	}
+	
+	function queryParams(params){
+		var orgId = "";
+		var zTree = $.fn.zTree.getZTreeObj("orgTree");
+		var nodes = zTree.getSelectedNodes();
+		if(nodes.length > 0){
+			orgId = nodes[0].id;
+		}
+		params.org_id = orgId;
+		return params;
+	}
+	
+	function showModal(title, row) {
+		row = row || {
+			name: '',
+			stargazers_count: 0,
+			forks_count: 0,
+			description: ''
+		}; // default row value
+	
+		$modal.data('id', row.id);
+		$modal.find('.modal-title').text(title);
+		for (var name in row) {
+			$modal.find('input[name="' + name + '"]').val(row[name]);
+		}
+		$modal.modal('show');
+		
+		var e = "<i class='fa fa-times-circle'></i> ";
+		$("#signupForm").validate({
+			rules : {
+				firstname : "required",
+				lastname : "required",
+				username : {
+					required : !0,
+					minlength : 2
+				},
+				password : {
+					required : !0,
+					minlength : 5
+				},
+				confirm_password : {
+					required : !0,
+					minlength : 5,
+					equalTo : "#password"
+				},
+				email : {
+					required : !0,
+					email : !0
+				},
+				topic : {
+					required : "#newsletter:checked",
+					minlength : 2
+				},
+				agree : "required"
+			},
+			messages : {
+				firstname : e + "请输入你的姓",
+				lastname : e + "请输入您的名字",
+				username : {
+					required : e + "请输入您的用户名",
+					minlength : e + "用户名必须两个字符以上"
+				},
+				password : {
+					required : e + "请输入您的密码",
+					minlength : e + "密码必须5个字符以上"
+				},
+				confirm_password : {
+					required : e + "请再次输入密码",
+					minlength : e + "密码必须5个字符以上",
+					equalTo : e + "两次输入的密码不一致"
+				},
+				email : e + "请输入您的E-mail",
+				agree : {
+					required : e + "必须同意协议后才能注册",
+					element : "#agree-error"
+				}
+			}
+		}), $("#username").focus(function() {
+			var e = $("#firstname").val(), r = $("#lastname").val();
+			e && r && !this.value && (this.value = e + "." + r)
+		})
+	}
+
+</script>
+ </body>
+</html>
